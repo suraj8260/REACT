@@ -1,24 +1,42 @@
-import React, { useState } from 'react'
-import Taskform from './components/Taskform'
-import Tasklist from './components/Tasklist'
-import Progresstracker from './components/Progresstracker'
+import { useState,useEffect } from 'react';
+import Taskform from './Components/Taskform'
+import Tasklist from './Components/Tasklist'
+import Progresstracker from './Components/Progresstracker'
+
 
 export default function App() {
-const[tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
-  const addTask = (task) => {
-    setTasks(task);
+
+  useEffect(()=>{
+    localStorage.setItem("tasks",JSON.stringify(tasks));
+  });
+
+
+  const addTask = (task)=>{
+    setTasks([...tasks, task])
   }
+
+  const updateTask = (updatedTask, index) => {
+    const newtask = [...tasks];
+    newtask[index] = updatedTask;
+    setTasks(newtask);
+  }
+
+  const deleteTask = () => {
+    
+  }
+
   return (
     <div>
       <header>
-        <h1>To-Do-List</h1>
-        <p><i>Your To-Do-List Manager</i></p>
+        <h1>TaskMan</h1>
+        <p><i>Your friendly Task Manager</i></p>
       </header>
       <Taskform addTask = {addTask}/>
-      <Tasklist />
+      <Tasklist tasks = {tasks} updateTask = {updateTask} deleteTask = {deleteTask}/>
       <Progresstracker />
-      <button>Clear All Tasks</button>
+      <button>clear All Tasks</button>
     </div>
   )
 }
